@@ -22,3 +22,15 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\TagUsingService:
+        arguments:
+            $taggedServices: !tagged_iterator 'mytag'
+
+    App\Service\TaggedService:
+        arguments:
+            $param: '@logger'
+        tags:
+            - mytag
+        # public: true
+        # this ↑ is the problem - unless this service is made public, lint:container does not flag it as an error
